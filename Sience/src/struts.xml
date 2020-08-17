@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.i18n.encoding" value="utf-8"/>
+	<constant name="struts.devMode" value="true"/>
+	
+	<package name="sience" extends="struts-default" namespace="/">
+	<!--user类  -->
+		<action name="userAction_*" method="{1}" class="cdnkxy.com.action.UserAction">
+			<result name="rigister">/login.jsp</result>
+			<result name="fail">/login.jsp</result>
+			<result name="success">/index.jsp</result>
+			<result name="findAll">/userMain.jsp</result>
+			<result name="add"    type="redirect">/userAction_doFindAll.action</result>
+			<result name="update" type="redirect">/userAction_doFindAll.action</result>
+			<result name="delete" type="redirect">/userAction_doFindAll.action</result>
+			<result name="find">/showUser.jsp</result>
+			<result name="init">/updateUser.jsp</result>
+			<result name="findName">/searcingResult.jsp</result>
+			
+		</action>
+				
+		<!-- shenbao类 -->
+		<action name="shenbaoAction_*" method="{1}" class="cdnkxy.com.action.ShenbaoAction">			
+			<result name="findAll">/shenbaoMain.jsp</result>
+			<result name="add"    type="redirect">/shenbaoAction_doFindAll.action</result>
+			<result name="update" type="redirect">/shenbaoAction_doFindAll.action</result>
+			<result name="delete" type="redirect">/shenbaoAction_doFindAll.action</result>
+			<result name="find">/showShenbao.jsp</result>
+			<result name="init">/updateShenbao.jsp</result>
+			<result name="findName">/searchingShenbao.jsp</result>
+		</action>
+	
+	<!--  成果类  -->
+	<action name="chengguoAction_*" method="{1}" class="cdnkxy.com.action.ChengguoAction">
+		<result name="findAll">/chengguoMain.jsp</result>
+		<result name="add" 	  type="redirect">/chengguoAction_doFindAll.action</result>
+		<result name="update" type="redirect">/chengguoAction_doFindAll.action</result>
+		<result name="delete" type="redirect">/chengguoAction_doFindAll.action</result>
+		<result name="find">/showChengguo.jsp</result>
+		<result name="init">/updateChengguo.jsp</result>
+		<result name="findName">/searhingChengguo.jsp</result>
+	</action>
+	
+	<!-- 指导教师类 -->
+	<action name="teacherAction_*" method="{1}" class="cdnkxy.com.action.TeacherAction">
+		<result name="findAll">/teacherMain.jsp</result>
+		<result name="add" 	  type="redirect">/teacherAction_doFindAll.action</result>
+		<result name="update" type="redirect">/teacherAction_doFindAll.action</result>
+		<result name="delete" type="redirect">/teacherAction_doFindAll.action</result>
+		<result name="find">/showTeacher.jsp</result>
+		<result name="init">/updateTeacher.jsp</result>
+		<result name="findName">/searchingTeacher.jsp</result>
+	</action>
+	<!-- 经费类 -->
+	<action name="qianAction_*" method="{1}" class="cdnkxy.com.action.QianAction">
+		<result name="findAll">/qianMain.jsp</result>
+		<result name="add" 	  type="redirect">/qianAction_doFindAll.action</result>
+		<result name="update" type="redirect">/qianAction_doFindAll.action</result>
+		<result name="delete" type="redirect">/qianAction_doFindAll.action</result>
+		<result name="find">/showQian.jsp</result>
+		<result name="init">/updateQian.jsp</result>
+		<result name="findName">/searchingQian.jsp</result>
+		<result name="success">/qianMain.jsp</result> 
+	</action>
+	</package>
+</struts>    

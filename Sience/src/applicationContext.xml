@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/aop 
+ 	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+    http://www.springframework.org/schema/context 
+ 	http://www.springframework.org/schema/context/spring-context-3.1.xsd"
+	>
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql:///test"></property><!-- 数据库设置，数据库test -->
+		<property name="user" value="root"></property>	
+		<property name="password" value="root"></property>	
+		<property name="minPoolSize" value="5"></property>
+		<property name="maxPoolSize" value="10"></property>
+	</bean>	
+	<!-- 配置Hibernate的SessionFactory实例 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<!-- 配置数据源的属性 -->
+		<property name="dataSource"><ref bean="dataSource"></ref></property>
+		<!-- 配置Hibernate的基本属性 -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>	
+			</props>
+		</property>
+		<!-- 配置Hibernate映射文件 -->
+		<property name="mappingResources">
+			<list><!-- 对象映射文件 -->
+				<value>cdnkxy/com/entity/User.hbm.xml</value>
+				<value>cdnkxy/com/entity/Shenbao.hbm.xml</value>
+				<value>cdnkxy/com/entity/Chengguo.hbm.xml</value>
+				<value>cdnkxy/com/entity/Teacher.hbm.xml</value>
+				<value>cdnkxy/com/entity/Qian.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<!-- 声明Hibernate的事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 定义事务通知，需要事务管理器 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	<!-- 指定事务传播的机制 -->
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 定义切面，将事务通知和切面结合，定义 哪些方法应用事务的规则-->
+	<aop:config>
+		<aop:pointcut expression="execution(* cdnkxy.com.service.*.*(..))" id="serviceMethod"/>
+		<!-- 将事务通知和切面组合 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"/>
+	</aop:config>
+	<!-- user -->
+	<!-- 1 -->
+	<bean id="userDAO" class="cdnkxy.com.dao.UserDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 2 -->
+	<bean id="userService" class="cdnkxy.com.service.UserServiceImpl">
+		<property name="userDAO" ref="userDAO"></property>
+	</bean>
+	<!-- 3 -->
+	<bean id="userAction" class="cdnkxy.com.action.UserAction">
+		<property name="userService" ref="userService"></property>
+	</bean>
+	<!-- 申报 -->
+	<!-- 1 -->
+	<bean id="shenbaoDAO" class="cdnkxy.com.dao.ShenbaoDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 2 -->
+	<bean id="shenbaoService" class="cdnkxy.com.service.ShenbaoServiceImpl">
+		<property name="shenbaoDAO" ref="shenbaoDAO"></property>
+	</bean>
+	<!-- 3 -->
+	<bean id="shenbaoAction" class="cdnkxy.com.action.ShenbaoAction">
+		<property name="shenbaoService" ref="shenbaoService"></property>
+	</bean>
+	<!-- 成果 -->
+		<!-- 1 -->
+	<bean id="chengguoDAO" class="cdnkxy.com.dao.ChengguoDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 2 -->
+	<bean id="chengguoService" class="cdnkxy.com.service.ChengguoServiceImpl">
+		<property name="chengguoDAO" ref="chengguoDAO"></property>
+	</bean>
+	<!-- 3 -->
+	<bean id="chengguoAction" class="cdnkxy.com.action.ChengguoAction">
+		<property name="chengguoService" ref="chengguoService"></property>
+	</bean>
+	<!-- 指导老师 -->
+	<!-- 1 -->
+	<bean id="teacherDAO" class="cdnkxy.com.dao.TeacherDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 2 -->
+	<bean name="teacherService" class="cdnkxy.com.service.TeacherServiceImpl">
+		<property name="teacherDAO" ref="teacherDAO"></property>
+	</bean>
+	<!-- 3 -->
+	<bean id="teacherAction" class="cdnkxy.com.action.TeacherAction">
+		<property name="teacherService" ref="teacherService"> </property>
+	</bean>
+	<!-- 经费 -->
+	<!-- 1 -->
+	<bean id="qianDAO" class="cdnkxy.com.dao.QianDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 2 -->
+	<bean name="qianService" class="cdnkxy.com.service.QianServiceImpl">
+		<property name="qianDAO" ref="qianDAO"></property>
+	</bean>
+	<!-- 3 -->
+	<bean id="qianAction" class="cdnkxy.com.action.QianAction">
+		<property name="qianService" ref="qianService"> </property>
+	</bean>
+</beans>

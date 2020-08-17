@@ -1,0 +1,23 @@
+/*普通样式*/
+div.style1{
+	width: 20px;
+	height: 20px;
+	float: left;
+	background-color: aqua;
+	border: 1px solid gray;
+	font-size: 15px;
+	text-align: center;
+	cursor: inherit;
+}
+/*高亮样式*/
+div.style2{
+	width: 20px;
+	height: 20px;
+	float: left;
+	background-color: gray;
+	border: 1px solid black;
+	font-size: 15px;
+	text-align: center;
+	font-weight: bold;
+	cursor: inherit;
+}
